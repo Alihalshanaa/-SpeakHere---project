@@ -1,0 +1,59 @@
+{%  extends 'landing/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-5 col-sm-12 border-bottom">
+           <h5>  Add a new post !</h5>
+           
+
+        </div>
+
+    </div>
+    <div class="row justify-content-center mb-5 mt-5">
+        <div class="col-md-5 col-sm-12 border-bottom">
+            <form  method="post" enctype='multipart/form-data'>{% csrf_token %}
+                {{ form | crispy }}
+             
+           <div class=" d-grid gap-5 justify-content-start">
+            <div   class ='col-1'>
+            <button   class="btn   btn-success mb-2 mt-2"> Add</button>
+           </div>
+            </div>
+            
+        </div>
+
+    </div>
+    {% for post in post_list %}
+    <div class="col-md-8 col-sm-12 border-bottom position-relative ">
+        <a href="{% url 'profile' post.author.profile.pk %}">
+            <img class="round-circle post-img" height="30" width="30" src="{{ post.author.profile.picture.url }}" />
+        </a> 
+        <p><a href="{% url 'profile' post.author.profile.pk %}" style='text-decoration : none' class="text-primary"> <strong>{{post.author}} </strong></a> {{ post.date_on}}</p>
+       
+
+        <h5> {{post.body}}</h5>
+        {% if post.image %}
+                  <img src="{{ post.image.url }}" class="post-image" />
+        {% endif %}
+        <div class="d-flex flex-row mt-3 mb-3">
+            <form  method="POST"  action =" {% url 'add-like'  post.pk%}">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{request.path}}">
+                <button   style="background-color:transparent; border:none ; box-shadow:none" type="submit"> 
+                    <i class='far fa-smile btn-search' ></i> <span >{{ post.likes.all.count }}</span> </button>
+            </form>
+            <form  method="POST"  action =" {% url 'add-dislike'  post.pk%}">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{request.path}}">
+                <button   style="background-color:transparent; border:none ; box-shadow:none" type="submit"> 
+                    <i class='far fa-frown btn-search'></i> {{ post.dislikes.all.count }}</button>
+            </form>
+            <a href=" {% url 'post-detail' post.pk %}"> <i class='fas fa-comment-alt btn-search ' ></i></a>
+        </div>
+     </div>
+    {% endfor%}
+</div>
+
+{% endblock content %}

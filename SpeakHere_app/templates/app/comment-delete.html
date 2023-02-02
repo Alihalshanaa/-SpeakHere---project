@@ -1,0 +1,32 @@
+{%  extends 'landing/base.html' %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-md-5 col-sm-6 ">
+           <a    href="{% url 'post-detail' object.post.pk %}"> Back to view Post </a>
+           
+
+        </div>
+
+    </div>
+    
+    <div class="row justify-content-center mb-5 mt-5">
+        <div class="col-md-5 col-sm-12 border-bottom">
+            <form  method="post">{% csrf_token %}
+                <h5>  Are You Sure ? </h5>
+              <p> You are about to delete this Comment </p >
+           <div class=" d-grid gap-5 justify-content-start">
+            <div   class ='col-1'>
+            <button   class="btn   btn-danger mb-2 mt-2"> Delete</button>
+           </div>
+            </div>
+            
+        </div>
+
+    </div>
+   
+</div>
+
+{% endblock content %}
